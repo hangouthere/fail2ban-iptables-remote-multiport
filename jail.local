@@ -1,27 +1,49 @@
 [DEFAULT]
-ignoreself = true
-bantime  = 86400
-findtime  = 600
+ignoreip = 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
+ignoreself  = true
+bantime     = 86400
+findtime    = 600
 
 # Augment default action with custom actions
 action = %(action_)s
-         iptables-remote-multiport
+         #iptables-remote-multiport[identity_file=/config/keys/ssh/ident_fail2ban,port="http,https"]
+         cloudflare[cfuser=nerdfoundrygaming@gmail.com,cftoken=<CLOUDFLARE_TOKEN_HERE>,port="http,https"]
+
+[nfg-instaban]
+enabled  = true
+bantime  = -1
+maxretry = 1
+filter   = nfg-instaban
+logpath  = /config/log/nginx/access.log
+loglevel = DEBUG
+
+[nfg-instaban2]
+enabled  = true
+bantime  = -1
+maxretry = 1
+filter   = nfg-instaban
+logpath  = /config/log/nginx/error.log
 
 [nginx-http-auth]
 enabled  = true
 filter   = nginx-http-auth
-port     = http,https
 logpath  = /config/log/nginx/error.log
 
 [nginx-badbots]
 enabled  = true
-port     = http,https
+maxretry = 1
+bantime  = -1
 filter   = nginx-badbots
 logpath  = /config/log/nginx/access.log
-maxretry = 1
 
 [nginx-botsearch]
 enabled  = true
-port     = http,https
+bantime  = -1
 filter   = nginx-botsearch
 logpath  = /config/log/nginx/access.log
+
+[nginx-deny]
+enabled  = true
+bantime  = -1
+filter   = nginx-deny
+logpath  = /config/log/nginx/error.log

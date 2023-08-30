@@ -64,11 +64,12 @@ Example:
 action = iptables-remote-multiport[remote_proxy_user=fail2ban]
 ```
 
-| Param             | Default                 | Description                                                                                                                                                          |
-| ----------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| remote_proxy_user | root                    | The user to ssh into the remote proxy (i.e., `remote_proxy_user@remote_proxy_host`).                                                                                 |
+| Param             | Default                 | Description                                                                                                                                                               |
+| ----------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| port              | 22                      | Defaults to the action this extends. Set to the port(s) you want to block  on once detected.                                                                              |
+| remote_proxy_user | root                    | The user to ssh into the remote proxy (i.e., `remote_proxy_user@remote_proxy_host`).                                                                                      |
 | remote_proxy_host | `192.168.1.1`           | The remote proxy host name/IP to ssh into (i.e., `remote_proxy_user@remote_proxy_host`).<br />This should include the port if the remote is running on an alternate port. |
-| identity_file     | `~/.ssh/ident_fail2ban` | The local path to find the SSH Identity to use for remoting into the proxy.                                                                                          |
+| identity_file     | `~/.ssh/ident_fail2ban` | The local path to find the SSH Identity to use for remoting into the proxy.                                                                                               |
 
 ### Docker Container
 
@@ -81,7 +82,7 @@ To add to that, I chose to store my keys in `/config/keys/ssh/ident_fail2ban[.pu
 
 [DEFAULT]
 action = %(action_)s
-         iptables-remote-multiport[identity_file=/config/keys/ssh/ident_fail2ban]
+         iptables-remote-multiport[identity_file=/config/keys/ssh/ident_fail2ban,port="http,https"]
 ```
 
 ### FreshTomato Routing Software
